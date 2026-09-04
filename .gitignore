@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Environment Variables
+.env
+.env.local
+.env.production
+
+# Build artifacts
+dist/
+build/
+frontend/dist/
+
+# Logs & OS
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
