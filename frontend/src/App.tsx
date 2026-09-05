@@ -17,7 +17,8 @@ interface Reservation {
 }
 
 // If testing locally use localhost:3000, or point to your deployed Render URL
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const rawApi= import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE = rawApi.replace(/\/+$/, '');
 
 export default function App() {
   const [products, setProducts] = useState<Product[]>([]);
