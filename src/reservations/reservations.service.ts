@@ -19,7 +19,7 @@ export class ReservationsService {
     await queryRunner.startTransaction();
 
     try {
-      // 1. قفل الصف لمنع الـ Race Condition (SELECT ... FOR UPDATE)
+      // 1. STOP Race Condition (SELECT ... FOR UPDATE)
       const product = await queryRunner.manager.findOne(Product, {
         where: { id: dto.productId },
         lock: { mode: 'pessimistic_write' },
@@ -33,11 +33,11 @@ export class ReservationsService {
         throw new BadRequestException('Not enough stock available');
       }
 
-      // 2. خصم الكمية من المخزون
+      // 2. quantity out of stock
       product.stock -= dto.quantity;
       await queryRunner.manager.save(Product, product);
 
-      // 3. صلاحية الحجز 10 دقائق
+      // 3. expiration 10min
       const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
       const reservation = queryRunner.manager.create(Reservation, {
